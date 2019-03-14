@@ -11,7 +11,7 @@ public:
   int getIntensity() const;
   void setBlink(int speed);
   void setFlicker(int step);
-  void setTransition(int setIntensity, int step);
+  void setTransition(int setIntensity, int speed);
   void setPulse(float step);
   void update();
 
