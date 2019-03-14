@@ -1,23 +1,21 @@
 #include "LED.h"
-LED led(8, 0);
+LED led(11, 0);
 int func = 0;
 
 void setup() {
-  pinMode(8, OUTPUT);
 }
 
 void loop() {
-  if ((millis() / 1000) % 60 == 0) {
+  if ((millis() / 1000) % 10 == 0) {
     switch (func) {
       case 0:
-        led.setBlink(500);
+        led.setBlink(1000);
         break;
       case 1:
-        led.setFlicker(250);
+        led.setFlicker(20);
         break;
       case 2:
-        led.setIntensity(0);
-        led.setTransition(255, 200);
+        led.setTransition(255, 20);
         break;
       case 3:
         led.setPulse(0.0025);
