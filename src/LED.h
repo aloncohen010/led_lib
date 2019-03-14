@@ -10,20 +10,20 @@ public:
   void setIntensity(int intensity);
   int getIntensity() const;
   void setBlink(int speed);
-  void setFlicker(int speed);
-  void setTransition(int setIntensity, int speed);
-  void setPulse(float speed);
+  void setFlicker(int step);
+  void setTransition(int setIntensity, int step);
+  void setPulse(float step);
   void update();
 
 private:
   int _pin;
   int _intensity;
   int _runningFunction = 0;
-  unsigned long _elapsedTime;
-  int _speed;
-  int _setIntensity;
-  float _pulsespeed;
-  float _pulseInput;
+  unsigned long _elapsedTime = 0;
+  int _step = 0;
+  int _setIntensity = 0;
+  float _pulseSpeed = 0;
+  float _pulseInput = 0;
 
   void blink();
   void flicker();

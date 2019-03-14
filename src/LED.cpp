@@ -34,12 +34,13 @@ void writeToPin(int pin, int value) {
 }
 unsigned long getElapsedTime() { return HAL_GetTick(); }
 long randomNumber(){return TM_RNG_Get()};
-void init(int pin) {}
+void init(int pin) {
+  // find stm32 equivilant of pinMode
+}
 #endif
 
 LED::LED(int pin, int intensity)
-    : _pin(pin), _intensity(intensity), _elapsedTime(0), _speed(0),
-      _setIntensity(0), _pulsespeed(0), _pulseInput(0) {
+    : _pin(pin), _intensity(intensity), _pulseInput(1.5 * M_PI) {
   init(_pin);
 }
 
@@ -51,6 +52,7 @@ void LED::setPin(int pin) {
 int LED::getPin() const { return _pin; }
 
 void LED::setIntensity(int intensity) {
+  _intensity = abs(intensity) < MAX_INTENSITY ? abs(intensity) : MAX_INTENSITY;
   _intensity = (intensity >= 0 && intensity <= MAX_INTENSITY) ? intensity : 0;
   writeToPin(_pin, _intensity);
 }
@@ -58,29 +60,29 @@ void LED::setIntensity(int intensity) {
 int LED::getIntensity() const { return _intensity; }
 
 void LED::setBlink(int speed) {
-  _speed = speed > 0 ? speed : 1000;
+  _step = abs(speed);
   _runningFunction = 1;
 }
 
-void LED::setFlicker(int speed) {
-  _speed = speed > 0 ? speed : 1000;
+void LED::setFlicker(int step) {
+  _step = abs(step);
   _runningFunction = 2;
 }
 
-void LED::setTransition(int setIntensity, int speed) {
-  _setIntensity = setIntensity;
-  _speed = speed;
+void LED::setTransition(int setIntensity, int step) {
+  _setIntensity =
+      abs(setIntensity) < MAX_INTENSITY ? abs(setIntensity) : MAX_INTENSITY;
+  _step = step;
   _runningFunction = 3;
 }
 
-void LED::setPulse(float speed) {
-  _pulsespeed = speed;
-  _pulseInput = 1.5 * M_PI; // setting initial _pulseInput so pulse starts at 0
+void LED::setPulse(float step) {
+  _pulseSpeed = fabs(step);
   _runningFunction = 4;
 }
 
 void LED::blink() {
-  if ((_elapsedTime + _speed) < getElapsedTime()) {
+  if ((_elapsedTime + _step) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
     if (_intensity == 0) {
       setIntensity(MAX_INTENSITY);
@@ -91,19 +93,20 @@ void LED::blink() {
 }
 
 void LED::flicker() {
-  if ((_elapsedTime + _speed) < getElapsedTime()) {
+  if ((_elapsedTime + _step) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
-    setIntensity((randomNumber() % MAX_INTENSITY + _speed));
+    setIntensity((randomNumber() % MAX_INTENSITY + _step));
   }
 }
 
 void LED::transition() {
-  if ((_elapsedTime + _speed) < getElapsedTime()) {
+  if ((_elapsedTime + _step) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
-    if (_intensity < _setIntensity && _intensity > 0) {
-      _intensity += _speed;
-    } else if (_intensity > _setIntensity && _intensity < MAX_INTENSITY) {
-      _intensity -= _speed;
+    _intensity += _step;
+    if (_intensity > MAX_INTENSITY) {
+      _intensity = MAX_INTENSITY;
+    } else if (_intensity < 0) {
+      _intensity = 0;
     }
     setIntensity(_intensity);
   }
@@ -113,7 +116,7 @@ void LED::pulse() {
   _intensity = static_cast<int>(sin(_pulseInput) * (MAX_INTENSITY / 2) +
                                 MAX_INTENSITY / 2);
   setIntensity(_intensity);
-  _pulseInput = _pulseInput + _speed;
+  _pulseInput = _pulseInput + _step;
   if (_pulseInput == 2 * M_PI) {
     _pulseInput = 0;
   }
