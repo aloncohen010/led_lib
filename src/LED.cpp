@@ -94,12 +94,11 @@ void LED::transition() {
                        ? _setIntensity
                        : (_intensity + _step);
     } else if (_setIntensity < _intensity) {
-      _intensity = _intensity - _step;
       _intensity = (_setIntensity - (_intensity - _step)) > 0
                        ? _setIntensity
                        : (_intensity - _step);
     }
-    _intensity = setIntensity(_intensity);
+    setIntensity(_intensity);
   }
 }
 

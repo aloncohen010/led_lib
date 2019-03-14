@@ -1,5 +1,8 @@
 #include "LED.h"
 
+#ifndef RGB_LED_HEADER
+#define RGB_LED_HEADER
+
 struct COLOR {
   COLOR(int r, int g, int b) : R(r), G(g), B(b) {}
   COLOR() : R(0), G(0), B(0) {}
@@ -29,3 +32,5 @@ private:
   LED _LEDS[3];
   COLOR _color;
 };
+
+#endif
