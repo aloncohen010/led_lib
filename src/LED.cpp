@@ -1,18 +1,5 @@
 #include "LED.h"
 
-#define X86
-
-#ifdef X86
-#include <math.h>
-using namespace std;
-const int PWM_BITS = 8;
-const int MAX_INTENSITY = pow(2, PWM_BITS) - 1;
-void writeToPin(int pin, int value) {}
-unsigned long getElapsedTime() { return 10; }
-long randomNumber() { return 10; }
-void init(int pin) {}
-#endif
-
 #ifdef ARDUINO
 #include <arduino.h>
 #include <math.h>
@@ -72,7 +59,7 @@ void LED::setFlicker(int step) {
 void LED::setTransition(int setIntensity, int step) {
   _setIntensity =
       abs(setIntensity) < MAX_INTENSITY ? abs(setIntensity) : MAX_INTENSITY;
-  _step = step;
+  _step = abs(step);
   _runningFunction = 3;
 }
 
@@ -102,13 +89,17 @@ void LED::flicker() {
 void LED::transition() {
   if ((_elapsedTime + _step) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
-    _intensity *= 2;
-    if (_intensity > MAX_INTENSITY) {
-      _intensity = MAX_INTENSITY;
-    } else if (_intensity < 0) {
-      _intensity = 0;
+    if (_setIntensity > _intensity) {
+      _intensity = (_setIntensity - (_intensity + _step)) < 0
+                       ? _setIntensity
+                       : (_intensity + _step);
+    } else if (_setIntensity < _intensity) {
+      _intensity = _intensity - _step;
+      _intensity = (_setIntensity - (_intensity - _step)) > 0
+                       ? _setIntensity
+                       : (_intensity - _step);
     }
-    setIntensity(_intensity);
+    _intensity = setIntensity(_intensity);
   }
 }
 

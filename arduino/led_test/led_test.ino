@@ -18,7 +18,7 @@ void loop() {
         led.setTransition(255, 20);
         break;
       case 3:
-        led.setPulse(0.0025);
+        led.setPulse(0.0008);
         break;
     }
     func = func > 3 ? 0 : func + 1;
