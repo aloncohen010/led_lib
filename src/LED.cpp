@@ -102,7 +102,7 @@ void LED::flicker() {
 void LED::transition() {
   if ((_elapsedTime + _step) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
-    _intensity += 2;
+    _intensity *= 2;
     if (_intensity > MAX_INTENSITY) {
       _intensity = MAX_INTENSITY;
     } else if (_intensity < 0) {
@@ -113,13 +113,11 @@ void LED::transition() {
 }
 
 void LED::pulse() {
-  _intensity = static_cast<int>(sin(_pulseInput) * (MAX_INTENSITY / 2) +
-                                (MAX_INTENSITY / 2));
+  _intensity = static_cast<int>(sin(_pulseInput) *
+                                    (static_cast<int>(MAX_INTENSITY) / 2) +
+                                (static_cast<int>(MAX_INTENSITY) / 2));
   setIntensity(_intensity);
-  _pulseInput = _pulseInput + _step;
-  if (_pulseInput == 2 * M_PI) {
-    _pulseInput = 0;
-  }
+  _pulseInput = _pulseInput + _pulseSpeed;
 }
 
 void LED::update() {

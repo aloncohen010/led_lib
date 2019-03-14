@@ -12,7 +12,7 @@ public:
   void setBlink(int speed);
   void setFlicker(int step);
   void setTransition(int setIntensity, int speed);
-  void setPulse(float step);
+  void setPulse(float speed);
   void update();
 
 private:
