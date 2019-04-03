@@ -4,35 +4,3 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-PWM_BITS	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^const unsigned int PWM_BITS = 8;$/;"	variable	line:5
-MAX_INTENSITY	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^const unsigned int MAX_INTENSITY =$/;"	variable	line:6
-writeToPin	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void writeToPin(unsigned int pin, unsigned int value) {}$/;"	function	line:8	signature:(unsigned int pin, unsigned int value)
-getElapsedTime	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^unsigned int getElapsedTime() { return 100; }$/;"	function	line:9	signature:()
-randomIntensityNumber	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^long randomIntensityNumber() { return 100; }$/;"	function	line:10	signature:()
-init	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void init(unsigned int pin) {}$/;"	function	line:11	signature:(unsigned int pin)
-PWM_BITS	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^const unsigned int PWM_BITS = 8;$/;"	variable	line:14
-MAX_INTENSITY	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^const unsigned int MAX_INTENSITY =$/;"	variable	line:15
-writeToPin	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void writeToPin(unsigned int pin, unsigned int value) {$/;"	function	line:17	signature:(unsigned int pin, unsigned int value)
-getElapsedTime	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^unsigned int getElapsedTime() { return millis(); }$/;"	function	line:20	signature:()
-randomIntensityNumber	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^long randomIntensityNumber() { return random(0, MAX_INTENSITY); }$/;"	function	line:21	signature:()
-init	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void init(unsigned int pin) { pinMode(pin, OUTPUT); }$/;"	function	line:22	signature:(unsigned int pin)
-PWM_BITS	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^const unsigned int PWM_BITS = 16;$/;"	variable	line:25
-MAX_INTENSITY	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^const unsigned int MAX_INTENSITY =$/;"	variable	line:26
-writeToPin	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void writeToPin(unsigned int pin, unsigned int value) {$/;"	function	line:28	signature:(unsigned int pin, unsigned int value)
-getElapsedTime	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^unsigned int getElapsedTime() { return HAL_GetTick(); }$/;"	function	line:31	signature:()
-randomIntensityNumber	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^long randomIntensityNumber(){return TM_RNG_Get()};$/;"	function	line:32	signature:()
-init	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void init(unsigned int pin) {$/;"	function	line:33	signature:(unsigned int pin)
-LED	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^LED::LED(unsigned int pin, unsigned int intensity)$/;"	function	line:38	class:LED	signature:(unsigned int pin, unsigned int intensity)
-setPin	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::setPin(unsigned int pin) {$/;"	function	line:44	class:LED	signature:(unsigned int pin)
-getPin	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^unsigned int LED::getPin() const { return _pin; }$/;"	function	line:49	class:LED	signature:() const
-setIntensity	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::setIntensity(unsigned int intensity) {$/;"	function	line:51	class:LED	signature:(unsigned int intensity)
-getIntensity	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^unsigned int LED::getIntensity() const { return _intensity; }$/;"	function	line:56	class:LED	signature:() const
-setBlink	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::setBlink(double interval) {$/;"	function	line:58	class:LED	signature:(double interval)
-setFlicker	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::setFlicker(double interval) {$/;"	function	line:64	class:LED	signature:(double interval)
-setTransition	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::setTransition(unsigned int setIntensity, double interval,$/;"	function	line:69	class:LED	signature:(unsigned int setIntensity, double interval, unsigned int ticks)
-setPulse	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::setPulse(double interval) {$/;"	function	line:79	class:LED	signature:(double interval)
-blink	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::blink() {$/;"	function	line:85	class:LED	signature:()
-flicker	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::flicker() {$/;"	function	line:96	class:LED	signature:()
-transition	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::transition() {$/;"	function	line:103	class:LED	signature:()
-pulse	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::pulse() {$/;"	function	line:119	class:LED	signature:()
-update	C:\Users\Alon Cohen\Google Drive\workspace\led_lib\src\LED.cpp	/^void LED::update() {$/;"	function	line:126	class:LED	signature:()

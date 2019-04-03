@@ -1,7 +1,9 @@
 #include "RGB_LED.h"
 
 const byte numChars = 32;
-const int numOfTokens = 7;
+const int numOfTokens = 8;
+unsigned long elapsedTime = 0;
+unsigned long interval = 0;
 char receivedBytes[numChars];
 char* tokens[numOfTokens];
 bool newData = false;
@@ -17,11 +19,11 @@ void printMenu() {
   Serial.println("|**       LED Demo        |**|");
   Serial.println("|****************************|");
   Serial.println("");
-  Serial.println("Usage: [setColor, red(0-255), green(0-255), blue(0-255)]");
-  Serial.println("       [blink, led(0-3), interval(seonds)");
-  Serial.println("       [flicker, led(0-3), interval(seonds)");
-  Serial.println("       [transition, led(0-3), intensity(0-255), interval(seonds), ticks");
-  Serial.println("       [colorTransition, red(0-255), green(0-255), blue(0-255), redInterval(seconds), greenInterval(seconds), blueInterval(seconds), ticks");
+  Serial.println("Usage: [set_color, red(0-255), green(0-255), blue(0-255)]");
+  Serial.println("       [blink, led(0-3), interval(seconds)]");
+  Serial.println("       [flicker, led(0-3), interval(seconds)]");
+  Serial.println("       [transition, led(0-3), intensity(0-255), interval(seconds), ticks(>0)]");
+  Serial.println("       [color_transition, red(0-255), green(0-255), blue(0-255), redInterval(seconds), greenInterval(seconds), blueInterval(seconds), ticks(>0)]");
   Serial.println("> ");
 }
 
@@ -57,12 +59,12 @@ void setup() {
 void loop() {
   rgb_led.update();
   reciveSerialBytes();
-  if (newData) {
+  if (newData && elapsedTime + interval < millis()) {
     for (int i = 0; i < numOfTokens; i++) {
       tokens[i] = strtok(receivedBytes, "\n");
     }
     if (tokens[0]) {
-      if (strcmp(tokens[0], "setColor") && tokens[1] && tokens[2] && tokens[3]) {
+      if (strcmp(tokens[0], "set_color") && tokens[1] && tokens[2] && tokens[3]) {
         rgb_led.setColor(COLOR(static_cast<unsigned int>(atoi(tokens[1])),
                                static_cast<unsigned int>(atoi(tokens[2])),
                                static_cast<unsigned int>(atoi(tokens[3]))));
@@ -77,7 +79,7 @@ void loop() {
                               static_cast<unsigned int>(atoi(tokens[2])),
                               static_cast<double>(atof(tokens[3])),
                               static_cast<unsigned int>(atoi(tokens[4])));
-      } else if (strcmp(tokens[0], "ColorTransition") && tokens[1] && tokens[2] && tokens[3] && tokens[4] && tokens[5]) {
+      } else if (strcmp(tokens[0], "color_transition") && tokens[1] && tokens[2] && tokens[3] && tokens[4] && tokens[5]) {
         rgb_led.setColorTransition(COLOR(static_cast<unsigned int>(atoi(tokens[1])),
                                          static_cast<unsigned int>(atoi(tokens[2])),
                                          static_cast<unsigned int>(atoi(tokens[3]))),
@@ -85,6 +87,8 @@ void loop() {
                                    static_cast<double>(atof(tokens[5])),
                                    static_cast<double>(atof(tokens[6])),
                                    static_cast<unsigned int>(atoi(tokens[7])));
+      } else if (strcmp(tokens[0], "delay") && tokens[1]) {
+        interval = static_cast<unsigned int>(atoi(tokens[1]);
       } else {
         Serial.println("Illegal input...");
       }

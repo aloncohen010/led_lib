@@ -6,7 +6,7 @@ const unsigned int PWM_BITS = 8;
 const unsigned int MAX_INTENSITY =
     static_cast<unsigned int>(pow(2, PWM_BITS) - 1);
 void writeToPin(unsigned int pin, unsigned int value) {}
-unsigned int getElapsedTime() { return 100; }
+unsigned long getElapsedTime() { return 100; }
 long randomIntensityNumber() { return 100; }
 void init(unsigned int pin) {}
 
@@ -17,7 +17,7 @@ const unsigned int MAX_INTENSITY =
 void writeToPin(unsigned int pin, unsigned int value) {
   analogWrite(pin, value);
 }
-unsigned int getElapsedTime() { return millis(); }
+unsigned long getElapsedTime() { return millis(); }
 long randomIntensityNumber() { return random(0, MAX_INTENSITY); }
 void init(unsigned int pin) { pinMode(pin, OUTPUT); }
 
@@ -28,7 +28,7 @@ const unsigned int MAX_INTENSITY =
 void writeToPin(unsigned int pin, unsigned int value) {
   // find stm32 equivilant of analogWrite
 }
-unsigned int getElapsedTime() { return HAL_GetTick(); }
+unsigned long getElapsedTime() { return HAL_GetTick(); }
 long randomIntensityNumber(){return TM_RNG_Get()};
 void init(unsigned int pin) {
   // find stm32 equivilant of pinMode
