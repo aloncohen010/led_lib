@@ -1,15 +1,15 @@
 #ifndef LED_HEADER
 #define LED_HEADER
 
-//#define X86
+// #define X86
 
 #if defined(X86)
 #include <cmath>
 #include <cstdint>
 #elif defined(ARDUINO)
+#include <arduino.h>
 #include <math.h>
 #include <stdint.h>
-#include <arduino.h>
 #elif defined(STM32)
 #include <math.h>
 #include <stdint.h>
@@ -40,11 +40,11 @@ private:
   double _interval;
   double _rateOfChange;
   double _factor;
-
-  void blink();
-  void flicker();
-  void transition();
-  void pulse();
+  void _blink();
+  void _flicker();
+  void _transition();
+  void _pulse();
+  void _set_intensity(unsigned int intensity);
 };
 
 #endif

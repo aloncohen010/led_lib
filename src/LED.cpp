@@ -5,7 +5,8 @@ using namespace std;
 const unsigned int PWM_BITS = 8;
 const unsigned int MAX_INTENSITY =
     static_cast<unsigned int>(pow(2, PWM_BITS) - 1);
-void writeToPin(unsigned int pin, unsigned int value) {}
+void analogWrite(unsigned int pin, unsigned int value) {}
+void digitalWrite(unsigned int pin, unsigned int value) {}
 unsigned long getElapsedTime() { return 100; }
 long randomIntensityNumber() { return 100; }
 void init(unsigned int pin) {}
@@ -14,9 +15,6 @@ void init(unsigned int pin) {}
 const unsigned int PWM_BITS = 8;
 const unsigned int MAX_INTENSITY =
     static_cast<unsigned int>(pow(2, PWM_BITS) - 1);
-void writeToPin(unsigned int pin, unsigned int value) {
-  analogWrite(pin, value);
-}
 unsigned long getElapsedTime() { return millis(); }
 long randomIntensityNumber() { return random(0, MAX_INTENSITY); }
 void init(unsigned int pin) { pinMode(pin, OUTPUT); }
@@ -25,7 +23,7 @@ void init(unsigned int pin) { pinMode(pin, OUTPUT); }
 const unsigned int PWM_BITS = 16;
 const unsigned int MAX_INTENSITY =
     static_cast<unsigned int>(pow(2, PWM_BITS) - 1);
-void writeToPin(unsigned int pin, unsigned int value) {
+void analogWrite(unsigned int pin, unsigned int value) {
   // find stm32 equivilant of analogWrite
 }
 unsigned long getElapsedTime() { return HAL_GetTick(); }
@@ -43,21 +41,21 @@ LED::LED(unsigned int pin, unsigned int intensity)
 
 void LED::setPin(unsigned int pin) {
   _pin = pin;
-  writeToPin(_pin, _intensity);
+  analogWrite(_pin, _intensity);
 }
 
 unsigned int LED::getPin() const { return _pin; }
 
 void LED::setIntensity(unsigned int intensity) {
-  _intensity = intensity < MAX_INTENSITY ? intensity : MAX_INTENSITY;
-  writeToPin(_pin, _intensity);
+  _runningFunction = 0;
+  _set_intensity(intensity);
 }
 
 unsigned int LED::getIntensity() const { return _intensity; }
 
 void LED::setBlink(double interval) {
   _interval = interval;
-  setIntensity(0);
+  _set_intensity(0);
   _runningFunction = 1;
 }
 
@@ -82,25 +80,25 @@ void LED::setPulse(double interval) {
   _runningFunction = 4;
 }
 
-void LED::blink() {
+void LED::_blink() {
   if ((_elapsedTime + _interval) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
     if (_intensity == 0) {
-      setIntensity(MAX_INTENSITY);
+      _set_intensity(MAX_INTENSITY);
     } else {
-      setIntensity(0);
+      _set_intensity(0);
     }
   }
 }
 
-void LED::flicker() {
+void LED::_flicker() {
   if ((_elapsedTime + _interval) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
-    setIntensity((randomIntensityNumber() % MAX_INTENSITY + _intensity));
+    _set_intensity((randomIntensityNumber() % MAX_INTENSITY + _intensity));
   }
 }
 
-void LED::transition() {
+void LED::_transition() {
   if ((_elapsedTime + _interval) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
     double temp = 0;
@@ -108,19 +106,30 @@ void LED::transition() {
       return;
     } else if (_intensity < _setIntensity) {
       temp = pow(2, ((_intensity + _rateOfChange) / _factor));
-      setIntensity(temp > _setIntensity ? _setIntensity : temp);
+      _set_intensity(temp > _setIntensity ? _setIntensity : temp);
     } else if (_intensity > _setIntensity) {
       temp = pow(2, ((_intensity - _rateOfChange) / _factor));
-      setIntensity(temp < _setIntensity ? _setIntensity : temp);
+      _set_intensity(temp < _setIntensity ? _setIntensity : temp);
     }
   }
 }
 
-void LED::pulse() {
+void LED::_pulse() {
   _intensity = static_cast<unsigned int>(
       sin(_rateOfChange) * (MAX_INTENSITY / 2) + (MAX_INTENSITY / 2));
-  setIntensity(_intensity / _factor);
+  _set_intensity(_intensity / _factor);
   _rateOfChange = _rateOfChange + _interval;
+}
+
+void LED::_set_intensity(unsigned int intensity) {
+  _intensity = intensity < MAX_INTENSITY ? intensity : MAX_INTENSITY;
+  if (_intensity == 0) {
+    digitalWrite(_pin, 0);
+  } else if (_intensity == MAX_INTENSITY) {
+    digitalWrite(_pin, 1);
+  } else {
+    analogWrite(_pin, 0);
+  }
 }
 
 void LED::update() {
@@ -128,16 +137,16 @@ void LED::update() {
   case 0:
     break;
   case 1:
-    blink();
+    _blink();
     break;
   case 2:
-    flicker();
+    _flicker();
     break;
   case 3:
-    transition();
+    _transition();
     break;
   case 4:
-    pulse();
+    _pulse();
     break;
   }
 }

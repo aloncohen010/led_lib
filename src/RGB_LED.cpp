@@ -48,7 +48,9 @@ void RGB_LED::setTransition(LED_ID led, unsigned int setIntensity,
   _LEDS[led].setTransition(setIntensity, interval, ticks);
 }
 
-void RGB_LED::setPulse(LED_ID led, double interval) { _LEDS[led].setPulse(interval); }
+void RGB_LED::setPulse(LED_ID led, double interval) {
+  _LEDS[led].setPulse(interval);
+}
 
 void RGB_LED::setColorTransition(COLOR color, double redInterval,
                                  double greenInterval, double blueInterval,
