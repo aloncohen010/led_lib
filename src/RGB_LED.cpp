@@ -3,7 +3,7 @@
 RGB_LED::RGB_LED(unsigned int redPin, unsigned int greenPin,
                  unsigned int bluePin, COLOR color) {
   _LEDS[RED].setPin(redPin);
-  _LEDS[RED].setIntensity(color.R);
+  _LEDS[RED].setIntensity(MAX_INTENSITY - color.R);
   _LEDS[GREEN].setPin(greenPin);
   _LEDS[GREEN].setIntensity(color.G);
   _LEDS[BLUE].setPin(bluePin);
@@ -44,8 +44,8 @@ void RGB_LED::setFlicker(LED_ID led, double interval) {
 }
 
 void RGB_LED::setTransition(LED_ID led, unsigned int setIntensity,
-                            double interval, unsigned int ticks) {
-  _LEDS[led].setTransition(setIntensity, interval, ticks);
+                            double interval) {
+  _LEDS[led].setTransition(setIntensity, interval);
 }
 
 void RGB_LED::setPulse(LED_ID led, double interval) {
@@ -53,11 +53,10 @@ void RGB_LED::setPulse(LED_ID led, double interval) {
 }
 
 void RGB_LED::setColorTransition(COLOR color, double redInterval,
-                                 double greenInterval, double blueInterval,
-                                 unsigned int ticks) {
-  _LEDS[RED].setTransition(color.R, redInterval, ticks);
-  _LEDS[GREEN].setTransition(color.G, greenInterval, ticks);
-  _LEDS[BLUE].setTransition(color.B, blueInterval, ticks);
+                                 double greenInterval, double blueInterval) {
+  _LEDS[RED].setTransition(color.R, redInterval);
+  _LEDS[GREEN].setTransition(color.G, greenInterval);
+  _LEDS[BLUE].setTransition(color.B, blueInterval);
 }
 
 void RGB_LED::update() {

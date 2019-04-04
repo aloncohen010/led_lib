@@ -25,8 +25,7 @@ public:
   unsigned int getIntensity() const;
   void setBlink(double interval);
   void setFlicker(double interval);
-  void setTransition(unsigned int setIntensity, double interval,
-                     unsigned int ticks);
+  void setTransition(unsigned int setIntensity, double interval);
   void setPulse(double interval);
   void update();
 
@@ -35,10 +34,10 @@ private:
   unsigned int _intensity;
   unsigned int _runningFunction = 0;
   unsigned int _elapsedTime = 0;
-  unsigned int _ticks;
   unsigned int _setIntensity;
+  unsigned int _step;
+  double _funcValue;
   double _interval;
-  double _rateOfChange;
   double _factor;
   void _blink();
   void _flicker();

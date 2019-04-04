@@ -24,11 +24,10 @@ public:
   const COLOR &getColor() const;
   void setBlink(LED_ID led, double interval);
   void setFlicker(LED_ID led, double interval);
-  void setTransition(LED_ID led, unsigned int setIntensity, double interval,
-                     unsigned int ticks);
+  void setTransition(LED_ID led, unsigned int setIntensity, double interval);
   void setPulse(LED_ID led, double interval);
   void setColorTransition(COLOR color, double redInterval, double greenInterval,
-                          double blueInterval, unsigned int ticks);
+                          double blueInterval);
   void update();
 
 private:
