@@ -15,7 +15,7 @@ class RGB_LED {
 public:
   enum LED_ID { RED, GREEN, BLUE };
   RGB_LED(unsigned int pin_red, unsigned int pin_green, unsigned int pin_blue,
-          COLOR color);
+          COLOR color, LED::PIN_ON_STATE pinOnState = LED::PIN_ON_STATE::_HIGH);
   void setPins(unsigned int pin_red, unsigned int pin_green,
                unsigned int pin_blue);
   void setPin(LED_ID led, unsigned int pin);

@@ -33,29 +33,54 @@ void init(unsigned int pin) {
 }
 #endif
 
-LED::LED(unsigned int pin, unsigned int intensity) {
-  setPin(pin);
-  setIntensity(intensity);
-  init(_pin);
+LED::LED(unsigned int pin, unsigned int intensity, PIN_ON_STATE pinOnState) {
+  init(pin);
+  _pin = pin;
+  _intensity = intensity;
+  _pinOnState = pinOnState;
+  setOn();
 }
 
 void LED::setPin(unsigned int pin) {
   _pin = pin;
-  analogWrite(_pin, _intensity);
+  setIntensity(_intensity);
 }
 
 unsigned int LED::getPin() const { return _pin; }
 
+void LED::setPinOnState(PIN_ON_STATE pinOnState) {
+  _pinOnState = pinOnState;
+  setIntensity(_intensity);
+}
+
+LED::PIN_ON_STATE LED::getPinOnState() { return _pinOnState; }
+
 void LED::setIntensity(unsigned int intensity) {
-  _runningFunction = 0;
-  _set_intensity(intensity);
+  _intensity = intensity < MAX_INTENSITY ? intensity : MAX_INTENSITY;
+  if (_intensity == 0) {
+    digitalWrite(_pin, !_pinOnState);
+  } else if (_intensity == MAX_INTENSITY) {
+    digitalWrite(_pin, _pinOnState);
+  } else {
+    analogWrite(_pin, _pinOnState ? _intensity : (MAX_INTENSITY - _intensity));
+  }
 }
 
 unsigned int LED::getIntensity() const { return _intensity; }
 
+void LED::setOn() {
+  _runningFunction = 0;
+  setIntensity(_intensity);
+}
+
+void LED::setOff() {
+  _runningFunction = 0;
+  setIntensity(0);
+}
+
 void LED::setBlink(double interval) {
   _interval = interval;
-  _set_intensity(0);
+  setIntensity(0);
   _runningFunction = 1;
 }
 
@@ -85,9 +110,9 @@ void LED::_blink() {
   if ((_elapsedTime + _interval) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
     if (_intensity == 0) {
-      _set_intensity(MAX_INTENSITY);
+      setIntensity(MAX_INTENSITY);
     } else {
-      _set_intensity(0);
+      setIntensity(0);
     }
   }
 }
@@ -95,7 +120,7 @@ void LED::_blink() {
 void LED::_flicker() {
   if ((_elapsedTime + _interval) < getElapsedTime()) {
     _elapsedTime = getElapsedTime();
-    _set_intensity(randomIntensityNumber());
+    setIntensity(randomIntensityNumber());
   }
 }
 
@@ -108,31 +133,20 @@ void LED::_transition() {
       return;
     } else if (_intensity < _setIntensity) {
       temp = pow(2, _step / _factor);
-      _set_intensity(temp > _setIntensity ? _setIntensity : temp);
+      setIntensity(temp > _setIntensity ? _setIntensity : temp);
       _step++;
     } else if (_intensity > _setIntensity) {
       temp = pow(2, _step / _factor);
-      _set_intensity(temp > _setIntensity ? _setIntensity : temp);
+      setIntensity(temp > _setIntensity ? _setIntensity : temp);
       _step--;
     }
   }
 }
 
 void LED::_pulse() {
-  _set_intensity(static_cast<unsigned int>(
-      sin(_funcValue) * (MAX_INTENSITY / 2) + (MAX_INTENSITY / 2)));
+  setIntensity(static_cast<unsigned int>(sin(_funcValue) * (MAX_INTENSITY / 2) +
+                                         (MAX_INTENSITY / 2)));
   _funcValue = _funcValue + _interval;
-}
-
-void LED::_set_intensity(unsigned int intensity) {
-  _intensity = intensity < MAX_INTENSITY ? intensity : MAX_INTENSITY;
-  if (_intensity == 0) {
-    digitalWrite(_pin, 0);
-  } else if (_intensity == MAX_INTENSITY) {
-    digitalWrite(_pin, 1);
-  } else {
-    analogWrite(_pin, _intensity);
-  }
 }
 
 void LED::update() {
