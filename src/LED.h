@@ -1,8 +1,6 @@
 #ifndef LED_HEADER
 #define LED_HEADER
 
-// #define X86
-
 #if defined(X86)
 #include <cmath>
 #include <cstdint>
@@ -14,6 +12,9 @@
 #include <math.h>
 #include <stdint.h>
 #endif
+
+extern const unsigned int PWM_BITS;
+extern const unsigned int MAX_INTENSITY;
 
 class LED {
 

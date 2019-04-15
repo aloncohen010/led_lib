@@ -3,7 +3,7 @@
 RGB_LED::RGB_LED(unsigned int redPin, unsigned int greenPin,
                  unsigned int bluePin, COLOR color) {
   _LEDS[RED].setPin(redPin);
-  _LEDS[RED].setIntensity(MAX_INTENSITY - color.R);
+  _LEDS[RED].setIntensity(color.R);
   _LEDS[GREEN].setPin(greenPin);
   _LEDS[GREEN].setIntensity(color.G);
   _LEDS[BLUE].setPin(bluePin);
