@@ -54,12 +54,12 @@ unsigned int LED::getIntensity() const { return _intensity; }
 
 void LED::setOn() {
   _runningFunction = 0;
-  setIntensity(_intensity);
+  analogWrite(_pin, _pinState ? _intensity : (MAX_INTENSITY - _intensity));
 }
 
 void LED::setOff() {
   _runningFunction = 0;
-  setIntensity(0);
+  analogWrite(_pin, 0);
 }
 
 void LED::setBlink(double interval) {

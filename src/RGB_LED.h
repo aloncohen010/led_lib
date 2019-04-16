@@ -23,7 +23,11 @@ public:
               LED::PIN_STATE pinState = LED::PIN_STATE::_HIGH);
   unsigned int getPin(LED_ID led);
   void setColor(COLOR color);
+  void setColor(unsigned int redValue, unsigned int greenValue,
+                unsigned int blueValue);
   const COLOR &getColor() const;
+  void setOn();
+  void setOff();
   void setBlink(LED_ID led, double interval);
   void setFlicker(LED_ID led, double interval);
   void setTransition(LED_ID led, unsigned int setIntensity, double interval);

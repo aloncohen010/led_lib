@@ -31,7 +31,24 @@ void RGB_LED::setColor(COLOR color) {
   _LEDS[BLUE].setIntensity(color.B);
 }
 
+void RGB_LED::setColor(unsigned int redValue, unsigned int greenValue,
+                       unsigned int blueValue) {
+  setColor(COLOR(redValue, greenValue, blueValue));
+}
+
 const COLOR &RGB_LED::getColor() const { return _color; }
+
+void RGB_LED::setOn() {
+  _LEDS[RED].setOn();
+  _LEDS[GREEN].setOn();
+  _LEDS[BLUE].setOn();
+}
+
+void RGB_LED::setOff() {
+  _LEDS[RED].setOff();
+  _LEDS[GREEN].setOff();
+  _LEDS[BLUE].setOff();
+}
 
 void RGB_LED::setBlink(LED_ID led, double interval) {
   _LEDS[led].setBlink(interval);
