@@ -6,10 +6,9 @@ const unsigned int PWM_BITS = 8;
 const unsigned int MAX_INTENSITY =
     static_cast<unsigned int>(pow(2, PWM_BITS) - 1);
 void analogWrite(unsigned int pin, unsigned int value) {}
-void digitalWrite(unsigned int pin, unsigned int value) {}
 unsigned long getElapsedTime() { return 100; }
 long randomIntensityNumber() { return 100; }
-void init(unsigned int pin) {}
+void initializePin(unsigned int pin) {}
 
 #elif defined(ARDUINO)
 const unsigned int PWM_BITS = 8;
@@ -17,7 +16,7 @@ const unsigned int MAX_INTENSITY =
     static_cast<unsigned int>(pow(2, PWM_BITS) - 1);
 unsigned long getElapsedTime() { return millis(); }
 long randomIntensityNumber() { return random(0, MAX_INTENSITY); }
-void init(unsigned int pin) { pinMode(pin, OUTPUT); }
+void initializePin(unsigned int pin) { pinMode(pin, OUTPUT); }
 
 #elif defined(STM32)
 const unsigned int PWM_BITS = 16;
@@ -28,42 +27,27 @@ void analogWrite(unsigned int pin, unsigned int value) {
 }
 unsigned long getElapsedTime() { return HAL_GetTick(); }
 long randomIntensityNumber(){return TM_RNG_Get()};
-void init(unsigned int pin) {
+void initializePin(unsigned int pin) {
   // find stm32 equivilant of pinMode
 }
 #endif
 
-LED::LED(unsigned int pin, unsigned int intensity, PIN_ON_STATE pinOnState) {
-  init(pin);
-  _pin = pin;
-  _intensity = intensity;
-  _pinOnState = pinOnState;
-  setOn();
+LED::LED(unsigned int pin, unsigned int intensity, PIN_STATE pinState) {
+  initializePin(pin);
+  setPin(pin, pinState);
+  setIntensity(_intensity);
 }
 
-void LED::setPin(unsigned int pin) {
+void LED::setPin(unsigned int pin, PIN_STATE pinState) {
   _pin = pin;
-  setIntensity(_intensity);
+  _pinState = pinState;
 }
 
 unsigned int LED::getPin() const { return _pin; }
 
-void LED::setPinOnState(PIN_ON_STATE pinOnState) {
-  _pinOnState = pinOnState;
-  setIntensity(_intensity);
-}
-
-LED::PIN_ON_STATE LED::getPinOnState() { return _pinOnState; }
-
 void LED::setIntensity(unsigned int intensity) {
   _intensity = intensity < MAX_INTENSITY ? intensity : MAX_INTENSITY;
-  if (_intensity == 0) {
-    digitalWrite(_pin, !_pinOnState);
-  } else if (_intensity == MAX_INTENSITY) {
-    digitalWrite(_pin, _pinOnState);
-  } else {
-    analogWrite(_pin, _pinOnState ? _intensity : (MAX_INTENSITY - _intensity));
-  }
+  analogWrite(_pin, _pinState ? _intensity : (MAX_INTENSITY - _intensity));
 }
 
 unsigned int LED::getIntensity() const { return _intensity; }
@@ -79,17 +63,18 @@ void LED::setOff() {
 }
 
 void LED::setBlink(double interval) {
+  _runningFunction = 1;
   _interval = interval;
   setIntensity(0);
-  _runningFunction = 1;
 }
 
 void LED::setFlicker(double interval) {
-  _interval = interval;
   _runningFunction = 2;
+  _interval = interval;
 }
 
 void LED::setTransition(unsigned int setIntensity, double interval) {
+  _runningFunction = 3;
   _setIntensity = setIntensity < MAX_INTENSITY ? setIntensity : MAX_INTENSITY;
   _step = _intensity;
   _factor =
@@ -97,13 +82,12 @@ void LED::setTransition(unsigned int setIntensity, double interval) {
        log10(2)) /
       log10(255);
   _interval = interval;
-  _runningFunction = 3;
 }
 
 void LED::setPulse(double interval) {
+  _runningFunction = 4;
   _interval = interval;
   _funcValue = 1.5 * M_PI;
-  _runningFunction = 4;
 }
 
 void LED::_blink() {
