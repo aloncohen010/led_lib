@@ -21,10 +21,10 @@ extern const unsigned int MAX_INTENSITY;
 class LED {
 
 public:
-  enum PIN_STATE { _HIGH, _LOW };
+  enum PIN_ON_STATE { _HIGH, _LOW };
   LED(unsigned int pin = 0, unsigned int intensity = 0,
-      PIN_STATE pinState = PIN_STATE::_HIGH);
-  void setPin(unsigned int pin, PIN_STATE pinState = PIN_STATE::_HIGH);
+      PIN_ON_STATE pinOnState = PIN_ON_STATE::_HIGH);
+  void setPin(unsigned int pin, PIN_ON_STATE pinOnState = PIN_ON_STATE::_HIGH);
   unsigned int getPin() const;
   void setIntensity(unsigned int intensity);
   unsigned int getIntensity() const;
@@ -40,13 +40,13 @@ private:
   unsigned int _pin;
   unsigned int _intensity;
   unsigned int _runningFunction = 0;
-  unsigned int _elapsedTime = 0;
+  unsigned long _elapsedTime = 0;
   unsigned int _setIntensity;
   unsigned int _step;
   double _funcValue;
   double _interval;
   double _factor;
-  PIN_STATE _pinState;
+  PIN_ON_STATE _pinState;
   void _blink();
   void _flicker();
   void _transition();

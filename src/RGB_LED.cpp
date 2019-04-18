@@ -1,25 +1,25 @@
 #include "RGB_LED.h"
 
 RGB_LED::RGB_LED(unsigned int redPin, unsigned int greenPin,
-                 unsigned int bluePin, COLOR color, LED::PIN_STATE pinState) {
+                 unsigned int bluePin, COLOR color, LED::PIN_ON_STATE pinOnState) {
   _color = color;
-  _LEDS[RED].setPin(redPin, pinState);
+  _LEDS[RED].setPin(redPin, pinOnState);
   _LEDS[RED].setIntensity(color.R);
-  _LEDS[GREEN].setPin(greenPin, pinState);
+  _LEDS[GREEN].setPin(greenPin, pinOnState);
   _LEDS[GREEN].setIntensity(color.G);
-  _LEDS[BLUE].setPin(bluePin, pinState);
+  _LEDS[BLUE].setPin(bluePin, pinOnState);
   _LEDS[BLUE].setIntensity(color.B);
 }
 
 void RGB_LED::setPins(unsigned int redPin, unsigned int greenPin,
-                      unsigned int bluePin, LED::PIN_STATE pinState) {
-  _LEDS[RED].setPin(redPin, pinState);
-  _LEDS[GREEN].setPin(greenPin, pinState);
-  _LEDS[BLUE].setPin(bluePin, pinState);
+                      unsigned int bluePin, LED::PIN_ON_STATE pinOnState) {
+  _LEDS[RED].setPin(redPin, pinOnState);
+  _LEDS[GREEN].setPin(greenPin, pinOnState);
+  _LEDS[BLUE].setPin(bluePin, pinOnState);
 }
 
-void RGB_LED::setPin(LED_ID led, unsigned int pin, LED::PIN_STATE pinState) {
-  _LEDS[led].setPin(pin, pinState);
+void RGB_LED::setPin(LED_ID led, unsigned int pin, LED::PIN_ON_STATE pinOnState) {
+  _LEDS[led].setPin(pin, pinOnState);
 }
 
 unsigned int RGB_LED::getPin(LED_ID led) { return _LEDS[led].getPin(); }

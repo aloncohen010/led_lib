@@ -32,15 +32,15 @@ void initializePin(unsigned int pin) {
 }
 #endif
 
-LED::LED(unsigned int pin, unsigned int intensity, PIN_STATE pinState) {
+LED::LED(unsigned int pin, unsigned int intensity, PIN_ON_STATE pinOnState) {
   initializePin(pin);
-  setPin(pin, pinState);
+  setPin(pin, pinOnState);
   setIntensity(_intensity);
 }
 
-void LED::setPin(unsigned int pin, PIN_STATE pinState) {
+void LED::setPin(unsigned int pin, PIN_ON_STATE pinOnState) {
   _pin = pin;
-  _pinState = pinState;
+  _pinState = pinOnState;
 }
 
 unsigned int LED::getPin() const { return _pin; }
