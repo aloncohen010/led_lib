@@ -20,10 +20,10 @@ void printMenu() {
   Serial.println("  [on]");
   Serial.println("  [off]");
   Serial.println("  [color, red(0-255), green(0-255), blue(0-255)]");
-  Serial.println("  [blink, led(0-3), interval(seconds)]");
-  Serial.println("  [flicker, led(0-3), interval(seconds)]");
-  Serial.println("  [transition, led(0-3), intensity(0-255), interval(seconds), ticks(>0)]");
-  Serial.println("  [color_transition, red(0-255), green(0-255), blue(0-255), redInterval(seconds), greenInterval(seconds), blueInterval(seconds), ticks(>0)]");
+  Serial.println("  [blink, led(0-3), interval(milliseconds)]");
+  Serial.println("  [flicker, led(0-3), interval(milliseconds)]");
+  Serial.println("  [transition, led(0-3), intensity(0-255), interval(milliseconds");
+  Serial.println("  [color_transition, red(0-255), green(0-255), blue(0-255), redInterval(milliseconds), greenInterval(milliseconds), blueInterval(milliseconds)");
   Serial.println("> ");
 }
 

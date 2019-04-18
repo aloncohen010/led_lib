@@ -59,7 +59,7 @@ void LED::setOn() {
 
 void LED::setOff() {
   _runningFunction = 0;
-  analogWrite(_pin, 0);
+  analogWrite(_pin, _pinState ? 0 : (MAX_INTENSITY);
 }
 
 void LED::setBlink(double interval) {
@@ -116,13 +116,13 @@ void LED::_transition() {
       _runningFunction = 0;
       return;
     } else if (_intensity < _setIntensity) {
-      temp = pow(2, _step / _factor);
-      setIntensity(temp > _setIntensity ? _setIntensity : temp);
       _step++;
-    } else if (_intensity > _setIntensity) {
       temp = pow(2, _step / _factor);
       setIntensity(temp > _setIntensity ? _setIntensity : temp);
+    } else if (_intensity > _setIntensity) {
       _step--;
+      temp = pow(2, _step / _factor);
+      setIntensity(temp < _setIntensity ? _setIntensity : temp);
     }
   }
 }
